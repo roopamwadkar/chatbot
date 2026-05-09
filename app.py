@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template # type: ignore
+from flask import Flask, request, jsonify # type: ignore
 from flask_cors import CORS # type: ignore
 from dotenv import load_dotenv, find_dotenv # type: ignore
 from groq import Groq # type: ignore
@@ -6,10 +6,15 @@ import os
 
 load_dotenv(find_dotenv())
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__)
 CORS(app)  # <-- Enable CORS for all routes and origins
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+
+
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"status": "ok", "message": "Medicinal Plant Chatbot API"})
 
 
 @app.route("/chat", methods=["POST"])
